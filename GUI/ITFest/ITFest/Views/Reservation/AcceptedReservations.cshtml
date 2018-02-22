@@ -1,0 +1,105 @@
+﻿@model ITFest.Models.AcceptedReservations
+
+@{
+    ViewBag.Title = "AcceptedReservations";
+}
+
+<h2>Accepted Reservations Preview</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartDateFilter, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StartDateFilter, new { htmlAttributes = new { Value = Model.StartDateFilter.ToString("dd-MMM-yyyy hh:mm tt"), @class = "form-control date-picker onChangeEvents", onkeydown = "return false", onpaste = "return false" } })
+                @Html.ValidationMessageFor(model => model.StartDateFilter, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDateFilter, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EndDateFilter, new { htmlAttributes = new { Value = Model.EndDateFilter.ToString("dd-MMM-yyyy hh:mm tt"), @class = "form-control date-picker onChangeEvents", onkeydown = "return false", onpaste = "return false" } })
+                @Html.ValidationMessageFor(model => model.StartDateFilter, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+}
+<br />
+
+
+<div id="displayElements">
+
+</div>
+
+
+@Html.ActionLink("Back", "Index", "Home", htmlAttributes: new { @class = "btn btn-info" })
+
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-timepicker-addon.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(function () {
+            $(".date-picker").datetimepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-100:+0",
+                dateFormat: 'dd-M-yy',
+                controlType: 'select',
+                timeFormat: 'hh:mm TT'
+            });
+        });
+    });
+
+    $(".onChangeEvents").on('change', function (ev) {
+
+        var StartDateTime = $("#StartDateFilter").val();
+        var EndDateTime = $("#EndDateFilter").val();
+        $("#displayElements").empty();
+
+        ev.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("FilterReservations", "Reservation")',
+            dataType: "json",
+            data: {
+                StartDateTime: StartDateTime,
+                EndDateTime: EndDateTime
+            },
+            success: function (data) {
+
+                var htmlString = '';
+                var Src = "~/Content/Images/table.jpg";
+                for (var i = 0; i < data.length; i++)
+
+                htmlString += '<div class="Tables">' +
+                        '<a href="/Reservation/GetDetails/' + data[i].Id + '">' +
+                        '<img src="@Url.Content(String.Format("{0}", "~/Content/Images/table.jpg"))" class="tablePic"/>' +
+                        '</a >' + 
+                        '<p>Nume: ' + data[i].Owner + '</p>' +
+                        '<p>Number of persons: ' + data[i].NrOfPersons + '</p>' +
+                        '<p>Start reservation time: ' + data[i].StartToString + '</p>' +
+                        '<p>End reservation time: ' + data[i].EndToString + '</p>' +
+                        '</div>';
+
+                    $('#displayElements').append(htmlString);
+
+
+            },
+            error: function () {
+                alert('An error occurred, please try again');
+            }
+        });
+
+    });
+
+</script>

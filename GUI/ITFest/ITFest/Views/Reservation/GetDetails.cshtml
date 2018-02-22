@@ -1,0 +1,39 @@
+﻿@model ITFest.Models.Reservation
+@{
+    ViewBag.Title = "GetDetails";
+}
+
+<h2>Details For Reservation on @Model.Date</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Number of persons</th>
+            <th scope="col">Email</th>
+            <th scope="col">Message</th>
+            <th scope="col">Reservation Start Date</th>
+            <th scope="col">Reservation End Date</th>
+            <th scope="col">Prefferences</th>
+            <th scope="col">Emotions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.Date</td>
+            <td>@Model.Owner</td>
+            <td>@Model.NrOfPersons</td>
+            <td>@Model.Email</td>
+            <td>@Model.Message</td>
+            <td>@Model.Date</td>
+            <td>@Model.EndReservationDate</td>
+            <td>@Model.Prefferences</td>
+            <td>@Model.Emotion</td>
+        </tr>
+    </tbody>
+</table>
+
+
+@Html.ActionLink("Index", "Index", "Home", htmlAttributes: new { @class = "btn btn-info" })
+<a class="btn btn-info" href="@Url.Action("AcceptedReservations")">Back to Accepted Reservations</a>

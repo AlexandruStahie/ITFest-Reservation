@@ -1,0 +1,93 @@
+﻿@model ITFest.Models.AcceptedReservations
+
+@{
+    ViewBag.Title = "AcceptedReservations";
+}
+
+<h2>Accepted Reservations Preview</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartDateFilter, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StartDateFilter, new { htmlAttributes = new { Value = Model.StartDateFilter.ToString("dd-MMM-yyyy hh:mm tt"), @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
+                @Html.ValidationMessageFor(model => model.StartDateFilter, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDateFilter, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EndDateFilter, new { htmlAttributes = new { Value = Model.EndDateFilter.ToString("dd-MMM-yyyy hh:mm tt"), @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
+                @Html.ValidationMessageFor(model => model.StartDateFilter, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+}
+
+
+<div id="displayElements">
+
+
+
+</div>
+
+
+@Html.ActionLink("Back", "Index", "Home", htmlAttributes: new { @class = "btn btn-info" })
+
+
+
+
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-timepicker-addon.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(function () {
+            $(".date-picker").datetimepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-100:+0",
+                dateFormat: 'dd-M-yy',
+                controlType: 'select',
+                timeFormat: 'hh:mm TT'
+            });
+        });
+    });
+
+
+    
+
+    @*$(document).ready(function () {
+        $(function () {
+            $("#StartDateFilter").on('change', function () {
+                var StartDateTime = $("#StartDateFilter");
+                var EndDateTime = $("#EndDateFilter");
+                $("#displayElements").empty();
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("FilterReservations", "Home")',
+                dataType: "json",
+                data: {
+                    StartDateTime: StartDateTime,
+                    EndDateTime: EndDateTime
+                }
+            })
+                .done(function (result) {
+                    alert("merge")
+                });
+
+            });
+        });
+    });*@
+</script>

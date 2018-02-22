@@ -1,0 +1,40 @@
+﻿@model List<ITFest.Models.Reservation>
+@{
+    ViewBag.Title = "ReservationList";
+}
+
+<h2>Reservation List</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Date</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Number of persons</th>
+            <th scope="col">Email</th>
+            <th scope="col">Message</th>
+            <th scope="col">Reservation Start Date</th>
+            <th scope="col">Reservation End Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var myRes in Model)
+        {
+            <tr>
+                <th scope="row">@myRes.Id</th>
+                <td>@myRes.Date</td>
+                <td>@myRes.Owner</td>
+                <td>@myRes.NrOfPersons</td>
+                <td>@myRes.Email</td>
+                <td>@myRes.Message</td>
+                <td>@myRes.StartReservationDate</td>
+                <td>@myRes.EndReservationDate</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<a class="btn btn-info" href="@Url.Action("AcceptedReservations")">Check Accepted Reservations</a>
